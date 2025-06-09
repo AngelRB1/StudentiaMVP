@@ -808,7 +808,7 @@ def iniciar_examen(request, slug):
         return redirect('ver_examen', slug=examen.slug)
 
     preguntas = Pregunta.objects.filter(examen=examen).prefetch_related('opcion_set')
-    return render(request, 'iniciar_examen.html', {
+    return render(request, 'general/iniciar_examen.html', {
         'examen': examen,
         'preguntas': preguntas,
     })
