@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agregar Actividad {{ curso.nombre_curso }}{% endblock %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .custom-form .form-group input,
+        .custom-form .form-group textarea,
+        .custom-form .form-group select {
+            border: 2px solid #1A3C5A !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+            width: 100% !important;
+            max-width: 400px;
+            margin: 0 auto;
+            transition: border-color 0.3s ease !important;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .custom-form .form-group input:focus,
+        .custom-form .form-group textarea:focus,
+        .custom-form .form-group select:focus {
+            border-color: #FF5733 !important;
+            outline: none !important;
+        }
+
+        .custom-form .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .custom-form .form-group label {
+            color: #4A4A4A !important;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 5px auto;
+        }
+
+        .custom-form .form-group .help-text {
+            color: #4A4A4A !important;
+            font-size: 0.9rem !important;
+            margin-top: 5px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .custom-form .form-group .checkbox-group {
+            text-align: left;
+            width: 400px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            background-color: #F5F8FF;
+            border: 2px solid #1A3C5A;
+            border-radius: 8px;
+            padding: 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-form .form-group .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            font-weight: 400 !important;
+            font-size: 1rem !important;
+            text-align: left;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+        .custom-form .form-group input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #1A3C5A;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            position: relative;
+            margin-right: 4px;
+        }
+
+        .custom-form .form-group input[type="checkbox"]:checked {
+            background-color: #1A3C5A;
+            border-color: #1A3C5A;
+        }
+
+        .custom-form .form-group input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            left: 2px;
+            top: -1px;
+        }
+
+        .custom-form .form-group input[type="checkbox"]:focus {
+            border-color: #FF5733 !important;
+            outline: none !important;
+        }
+
+        .custom-form .form-group .file-input-wrapper {
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 2px solid #1A3C5A;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+            overflow: hidden;
+        }
+
+        .custom-form .form-group .file-input-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .custom-form .form-group .file-input-wrapper .file-button {
+            background-color: #1A3C5A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            margin: 0;
+            transition: background-color 0.3s ease;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-form .form-group .file-input-wrapper .file-button:hover {
+            background-color: #FF5733;
+        }
+
+        .custom-form .form-group .file-input-wrapper .file-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #4A4A4A;
+            flex-grow: 1;
+            padding: 8px 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin-right: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="text-center">
+            <div class="custom-section">
+                <h2 class="custom-title">Agregar Actividad a {{ curso.nombre_curso }}</h2>
+
+                <form method="post" enctype="multipart/form-data" class="custom-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if field.name not in "entregable,generado_por_ia,permite_entrega_tardia" %}
+                            <div class="form-group mb-4">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.name == "archivo" %}
+                                    <div class="file-input-wrapper">
+                                        <input type="file" name="archivo" id="id_archivo" onchange="updateFileName(this)">
+                                        <button type="button" class="file-button" onclick="document.getElementById('id_archivo').click()">Elegir archivo</button>
+                                        <span class="file-name">No se eligió ningún archivo</span>
+                                    </div>
+                                    {% if field.help_text %}
+                                        <div class="help-text">{{ field.help_text }}</div>
+                                    {% endif %}
+                                {% else %}
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <div class="help-text">{{ field.help_text }}</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group mb-4">
+                        <label>Opciones</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="entregable" id="id_entregable"> Entregable</label>
+
+                            <label><input type="checkbox" name="permite_entrega_tardia" id="id_permite_entrega_tardia"> Permite entrega tardía</label>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="custom-button">Guardar Actividad</button>
+                        <a href="{% url 'board' curso.codigo_acceso %}" class="custom-button">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        function updateFileName(input) {
+            const fileNameSpan = input.parentElement.querySelector('.file-name');
+            if (input.files.length > 0) {
+                fileNameSpan.textContent = input.files[0].name;
+            } else {
+                fileNameSpan.textContent = 'No se eligió ningún archivo';
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            color: #4A4A4A !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 10px;
+        }
+        ul li strong {
+            color: #1A3C5A !important;
+        }
+        img {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+  <div class="container py-md-5 py-4">
+    <div class="text-center">
+      <div class="custom-section">
+        <h2 class="custom-title">Mi Perfil</h2>
+
+        {% if usuario.foto_perfil %}
+            <img src="{{ usuario.foto_perfil.url }}" alt="Foto de perfil" width="150">
+        {% else %}
+            <img src="/static/img/default_profile.png" alt="Sin foto de perfil" width="150">
+        {% endif %}
+
+        <ul>
+            <li><strong>Nombre de usuario:</strong> {{ usuario.username }}</li>
+            <li><strong>Email:</strong> {{ usuario.email }}</li>
+            <li><strong>Rol:</strong> {{ usuario.rol }}</li>
+            <li><strong>Sobre mí:</strong> {{ usuario.sobre_mi }}</li>
+        </ul>
+
+        <a href="{% url 'editar_perfil' %}" class="custom-button">Editar Perfil</a><br>
+        <a href="{% url 'inicio' %}" class="custom-button">Volver a Inicio</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Retroalimentación - {{ examen.titulo }}{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 50px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2rem !important;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .question-block {
+        background-color: #eef2fc;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        text-align: left;
+        font-family: 'Poppins', sans-serif;
+        color: #1A3C5A;
+    }
+
+    .question-block p {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 1rem;
+        color: #1A3C5A;
+    }
+
+    input[type="number"],
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #1A3C5A;
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .custom-button,
+    .btn {
+        background-color: #1A3C5A !important;
+        border: none !important;
+        padding: 10px 20px;
+        border-radius: 8px !important;
+        transition: background-color 0.3s ease !important;
+        color: #FFFFFF !important;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        text-decoration: none !important;
+        cursor: pointer;
+    }
+
+    .custom-button:hover,
+    .btn:hover {
+        background-color: #FF5733 !important;
+    }
+
+    ul.messages {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 20px auto 0 auto;
+        text-align: left;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    ul.messages li {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: #ffdddd;
+        color: #900;
+        border: 1px solid #900;
+    }
+
+    ul.messages li.success {
+        background-color: #ddffdd;
+        color: #090;
+        border-color: #090;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        <h2 class="custom-title">Editar Retroalimentación</h2>
+        <p><strong>Estudiante:</strong> {{ estudiante.username }}</p>
+        <p><strong>Examen:</strong> {{ examen.titulo }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for respuesta in respuestas %}
+                <div class="question-block">
+                    <p><strong>Pregunta:</strong> {{ respuesta.pregunta.texto }}</p>
+
+                    <label for="comentario_{{ respuesta.id }}">Comentario:</label>
+                    <textarea name="comentario_{{ respuesta.id }}" id="comentario_{{ respuesta.id }}">{{ respuesta.comentario }}</textarea>
+
+                    <label for="puntaje_{{ respuesta.id }}">Puntaje (0-100):</label>
+                    <input type="number" name="puntaje_{{ respuesta.id }}" id="puntaje_{{ respuesta.id }}"
+                           step="0.1" min="0" max="100" value="{{ respuesta.puntaje }}" required>
+                </div>
+            {% endfor %}
+
+            <div class="button-group">
+                <button type="submit" class="custom-button">Guardar Cambios</button>
+                <a href="{% url 'alumnos_con_retroalimentacion' examen.id %}" class="custom-button">Cancelar</a>
+            </div>
+        </form>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

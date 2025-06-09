@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+  .w3l-contact-section {
+    background-color: #F5F8FF;
+    padding: 50px 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  .custom-section {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Poppins', sans-serif;
+    color: #1A3C5A;
+  }
+  .custom-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    color: #1A3C5A; /* Navy blue for the title */
+  }
+  .pregunta {
+    background-color: #34495E; /* Lighter navy blue background */
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(52, 73, 94, 0.2); /* Adjusted shadow to match new color */
+    color: #FFFFFF; /* White text inside boxes */
+  }
+  /* Forzar texto blanco para evitar tonos grises */
+  .pregunta p,
+  .pregunta strong,
+  .pregunta em {
+    color: #FFFFFF !important;
+  }
+  .pregunta p {
+    margin: 8px 0;
+    font-size: 1.1rem;
+  }
+  .pregunta strong {
+    font-weight: 700;
+  }
+  .pregunta em {
+    font-weight: 700; /* Make italic labels bold */
+  }
+  a.btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #1A3C5A;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  a.btn-secondary:hover {
+    background-color: #FF5733;
+    color: white;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+  <div class="custom-section">
+    <h2 class="custom-title">Retroalimentación: {{ examen.titulo }}</h2>
+
+    {% if respuestas %}
+      {% for r in respuestas %}
+        <div class="pregunta">
+          <p><strong>{{ r.pregunta.texto }}</strong></p>
+          <p><em>Respuesta:</em> {{ r.respuesta_texto|default:r.opcion_seleccionada }}</p>
+          <p><strong>Puntaje recibido:</strong> {{ r.puntaje }}</p>
+          {% if r.comentario %}
+            <p><strong>Comentario:</strong> {{ r.comentario }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No hay retroalimentación disponible.</p>
+    {% endif %}
+
+    <a href="{% url 'lista_retroalimentacion' codigo_acceso %}" class="btn-secondary">Volver</a>
+  </div>
+</section>
+{% endblock %}

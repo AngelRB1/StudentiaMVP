@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+input[type="checkbox"][id$="-clear"] {
+    display: none;
+}
+.custom-section {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+.custom-title {
+    color: #1A3C5A;
+    font-size: 2.8rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+.custom-form .form-group input,
+.custom-form .form-group select,
+.custom-form .form-group textarea {
+    border: 2px solid #1A3C5A;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+.custom-form .form-group input:focus,
+.custom-form .form-group select:focus,
+.custom-form .form-group textarea:focus {
+    border-color: #FF5733;
+    outline: none;
+}
+.custom-form .form-group label {
+    color: #4A4A4A;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.text-danger {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+.custom-button {
+    background-color: #1A3C5A;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+.custom-button:hover {
+    background-color: #FF5733;
+}
+.photo-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+.photo-section span {
+    color: #4A4A4A;
+    font-size: 1rem;
+}
+.photo-section a {
+    color: #1A3C5A;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.photo-section a:hover {
+    color: #FF5733;
+    text-decoration: underline;
+}
+.file-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.file-input button {
+    background-color: #1A3C5A;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.file-input button:hover {
+    background-color: #FF5733;
+}
+.delete-button {
+    background-color: #dc3545;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: #c82333;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+  <div class="container py-md-5 py-4">
+    <div class="text-center">
+      <div class="custom-section">
+        <h2 class="custom-title">Editar Perfil</h2>
+
+<form method="post" enctype="multipart/form-data" class="custom-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                {% if field.name != 'foto_perfil' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if user.foto_perfil %}
+                <div id="current-photo-wrapper" class="photo-section">
+                    <span>Foto actual:</span>
+                    <a id="current-photo-link" href="{{ user.foto_perfil.url }}" target="_blank">{{ user.foto_perfil.name }}</a>
+                    <button type="button" class="delete-button" onclick="deletePhoto()">Borrar Foto</button>
+                    <input type="checkbox" id="id_foto_perfil-clear" name="foto_perfil-clear" style="display: none;">
+                </div>
+            {% endif %}
+
+            <div class="form-group file-input mt-3">
+                <label for="id_foto_perfil">Nueva foto de perfil:</label>
+                <input type="file" name="foto_perfil" id="id_foto_perfil" accept="image/*">
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="custom-button">Guardar Cambios</button>
+                <a href="{% url 'ver_perfil' %}" class="custom-button">Cancelar</a>
+            </div>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form.custom-form");
+    const emailInput = form.querySelector("input[name='email']");
+
+    if (!emailInput) return; // Si no hay campo email, salimos
+
+    // Buscar el contenedor del campo (donde están el label y el input)
+    const formGroup = emailInput.closest('.form-group');
+
+    // Crear el div de error
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "text-danger";
+    errorDiv.style.display = "none";
+    errorDiv.textContent = "Por favor, complete este campo";
+    formGroup.appendChild(errorDiv);
+
+    // Mostrar error al enviar
+    form.addEventListener("submit", function (e) {
+        if (emailInput.value.trim() === "") {
+            e.preventDefault(); // Detener el envío
+            errorDiv.style.display = "block";
+            emailInput.focus();
+        }
+    });
+
+    // Ocultar error al escribir
+    emailInput.addEventListener("input", function () {
+        if (emailInput.value.trim() !== "") {
+            errorDiv.style.display = "none";
+        }
+    });
+});
+
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form.custom-form");
+    const photoInput = document.getElementById('id_foto_perfil');
+    const deletePhotoCheckbox = document.getElementById('id_foto_perfil-clear');
+    const currentPhotoWrapper = document.getElementById('current-photo-wrapper');
+
+    window.deletePhoto = function () {
+        if (deletePhotoCheckbox) deletePhotoCheckbox.checked = true;
+        if (photoInput) photoInput.value = '';
+        if (currentPhotoWrapper) currentPhotoWrapper.style.display = 'none';
+    };
+
+    // Validación sobre_mi
+    const sobreMiInput = form.querySelector("textarea[name='sobre_mi']");
+    if (sobreMiInput) {
+        const maxLength = 150;
+        const counter = document.createElement("div");
+        counter.style.fontSize = "0.9rem";
+        counter.style.textAlign = "right";
+        counter.style.color = "#6c757d";
+        counter.textContent = `0 / ${maxLength}`;
+        sobreMiInput.parentElement.appendChild(counter);
+
+        const sobreMiError = document.createElement("div");
+        sobreMiError.className = "text-danger";
+        sobreMiError.style.display = "none";
+        sobreMiError.textContent = `Máximo ${maxLength} caracteres permitidos.`;
+        sobreMiInput.parentElement.appendChild(sobreMiError);
+
+        sobreMiInput.addEventListener("input", function () {
+            let currentText = sobreMiInput.value;
+            if (currentText.length > maxLength) {
+                sobreMiInput.value = currentText.slice(0, maxLength);
+                sobreMiError.style.display = "block";
+            } else {
+                sobreMiError.style.display = "none";
+            }
+            counter.textContent = `${sobreMiInput.value.length} / ${maxLength}`;
+            counter.style.color = sobreMiInput.value.length >= maxLength ? "#dc3545" : "#6c757d";
+        });
+
+        form.addEventListener("submit", function (e) {
+            if (sobreMiInput.value.length > maxLength) {
+                e.preventDefault();
+                sobreMiError.style.display = "block";
+                sobreMiInput.focus();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

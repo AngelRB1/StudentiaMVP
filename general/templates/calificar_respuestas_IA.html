@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Respuestas del Estudiante{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .inicio-btn {
+        background-color: #FF5733;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .inicio-btn:hover {
+        background-color: #e04e2d;
+        color: #fff;
+    }
+    .user-greeting {
+        font-size: 1rem;
+        color: #4A4A4A;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .titulo-examen {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1A3C5A;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .subtitulo-estudiante {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #4A4A4A;
+        margin-bottom: 20px;
+    }
+    .resumen {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    .pregunta-card {
+        background: #F0F4FA;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 5px solid #1A3C5A;
+    }
+    .pregunta-card p {
+        margin-bottom: 8px;
+    }
+    .pregunta-card strong {
+        color: #1A3C5A;
+    }
+    .respuesta-correcta {
+        color: #28a745;
+        font-weight: 600;
+    }
+    .respuesta-incorrecta {
+        color: #dc3545;
+        font-weight: 600;
+    }
+    .btn-secondary {
+        background-color: #1A3C5A;
+        color: #fff;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 25px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #FF5733;
+        color: #fff;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <a href="{% url 'seleccionar_estudiante' slug=examen.slug %}" class="inicio-btn">Inicio</a>
+    <span class="user-greeting">Hola, @{{ estudiante.username }}</span>
+</div>
+
+<div class="container">
+    <h2 class="titulo-examen">Examen: {{ examen.nombre }}</h2>
+    <h4 class="subtitulo-estudiante">Estudiante: {{ estudiante.get_full_name|default:estudiante.username }}</h4>
+
+    <p class="resumen">Número de preguntas respondidas: {{ numero_de_preguntas }}</p>
+
+    <hr>
+
+    {% for item in preguntas_resultados %}
+        <div class="pregunta-card">
+            <p><strong>Pregunta {{ forloop.counter }}:</strong> {{ item.pregunta.texto }}</p>
+            <p><strong>Respuesta del estudiante:</strong> {{ item.respuesta }}</p>
+            <p>
+                <strong>Evaluación IA:</strong>
+                {% if item.es_correcta %}
+                    <span class="respuesta-correcta">✅ Correcta</span>
+                {% else %}
+                    <span class="respuesta-incorrecta">❌ Incorrecta</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+
+    <a href="{% url 'seleccionar_estudiante' slug=examen.slug %}" class="btn-secondary mt-4">Volver</a>
+</div>
+{% endblock %}

@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="w3l-main-content" id="Inicio">
+        <div class="container">
+            <div class="row align-items-center w3l-slider-grids">
+                <div class="col-lg-6 w3l-slider-left-info pe-lg-5">
+                    <h6 class="title-subhny mb-2">Educación Simplificada</h6>
+                    <h3 class="mb-2 title">Bienvenido a <span>Studentia</span></h3>
+                    <h3 class="mb-4 title">Tu Plataforma Educativa</h3>
+                    <p class="w3banr-p">Studentia es una plataforma educativa diseñada para gestionar cursos, exámenes y actividades de forma eficiente, conectando a estudiantes y profesores en un entorno virtual intuitivo y amigable.</p>
+                    <div class="w3l-buttons mt-sm-5 mt-4">
+                    </div>
+                </div>
+                <div class="col-lg-6 w3l-slider-right-info mt-lg-0 mt-5 ps-lg-5 align-items-center">
+                    <div class="w3l-main-slider banner-slider">
+                        <div class="slider-info">
+                            <div class="w3l-slidehny-img banner-top1">
+                                <img src="{% static 'images/banner1.jpg' %}" alt="Studentia Overview" class="radius-image img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-grids-3 py-5">
+        <div class="container py-md-5 py-3">
+            <div class="row align-items-center">
+                <div class="col-lg-6 header-sec">
+                    <h6 class="title-subhny mb-2">Funciones Principales</h6>
+                    <h3 class="title-w3l">Todo lo que Necesitas para Enseñar y Aprender</h3>
+                </div>
+                <div class="col-lg-6 header-sec-paraw3 ps-lg-4">
+                    <p>A diferencia de otras plataformas como Classroom o Blackboard, Studentia integra inteligencia artificial para la corrección automática de exámenes, ofrece una biblioteca de preguntas personalizable y permite simulaciones de exámenes interactivas, enfocándose en la personalización y la automatización.</p>
+                </div>
+            </div>
+            <div class="row bottom_grids text-left mt-lg-5 align-items-center">
+                <div class="col-lg-4 col-md-6 mt-5">
+                    <div class="grid-block">
+                        <a href="#grids" class="d-block">
+                            <div class="grid-block-infw3">
+                                <div class="grid-block-icon"><span class="fas fa-chalkboard-teacher"></span></div>
+                                <h4 class="my-3">Gestión de Cursos</h4>
+                            </div>
+                            <p>Crea y organiza cursos con códigos únicos para inscribir estudiantes.</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mt-5">
+                    <div class="grid-block active">
+                        <a href="#grids" class="d-block">
+                            <div class="grid-block-infw3">
+                                <div class="grid-block-icon"><span class="far fa-file-alt"></span></div>
+                                <h4 class="my-3">Exámenes y Actividades</h4>
+                            </div>
+                            <p>Administra exámenes, actividades y entregables en PDF con corrección asistida por IA.</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mt-5">
+                    <div class="grid-block">
+                        <a href="#grids" class="d-block">
+                            <div class="grid-block-infw3">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-circles-sec" id="circle">
+        <div class="midd-w3 py-5">
+            <div class="container py-lg-5 py-3">
+                <div class="w3l-circles">
+                    <div class="w3l-circles-infhny">
+                        <div class="title-content text-left">
+                            <h6 class="title-subhny mb-2">Transforma la Educación</h6>
+                            <h3 class="title-w3l two">Innovación para Profesores y Estudiantes</h3>
+                        </div>
+                        <p class="mt-md-4 mt-3">Studentia ofrece herramientas avanzadas para optimizar la enseñanza y el aprendizaje, reduciendo la carga administrativa y mejorando la experiencia educativa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-img-grids" id="gridsimg">
+        <div class="blog py-5" id="classes">
+            <div class="container py-lg-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="#services">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src="{% static 'images/g1.jpg' %}" alt="Professor">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>Profesores</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">Beneficios para Profesores</h4>
+                                    </a>
+                                    <p>Automatización de calificaciones con IA, análisis detallado de rendimiento y gestión simplificada de cursos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="#services">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src="{% static 'images/g2.jpg' %}" alt="Student">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>Estudiantes</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">Beneficios para Estudiantes</h4>
+                                    </a>
+                                    <p>Acceso a recursos educativos, simulaciones prácticas y retroalimentación inmediata.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="#services">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src="{% static 'images/g3.jpg' %}" alt="Community">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>Comunidad</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">Comunidad Educativa</h4>
+                                    </a>
+                                    <p>Conecta a estudiantes y profesores en un entorno seguro y colaborativo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-video" id="video">
+        <div class="video-mid-w3 py-5">
+            <div class="container py-md-5 py-3">
+                <div class="row">
+                    <div class="col-lg-6 mt-lg-0 mb-5 align-self pe-lg-3">
+                        <div class="title-content text-left">
+                            <h6 class="title-subhny mb-2">Aprende y Crece</h6>
+                            <h3 class="title-w3l two">Optimiza tu Experiencia Educativa</h3>
+                        </div>
+                        <p class="mt-md-4 mt-3">Studentia ofrece simulaciones interactivas y una biblioteca de preguntas personalizable para mejorar el aprendizaje.</p>
+                        <div class="w3l-two-buttons">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 videow3-right ps-lg-5">
+                        <div class="w3l-index5 py-5">
+                            <div class="history-info align-self text-center py-5 my-lg-5">
+                                <div class="position-relative py-5">
+                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view text-center position-absolute">
+                                        <span class="video-play-icon">
+                                            <span class="fa fa-play"></span>
+                                        </span>
+                                    </a>
+                                    <div id="small-dialog1" class="zoom-anim-dialog mfp-hide">
+                                        <iframe src="https://player.vimeo.com/video/124801644" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-products w3l-faq-block py-5" id="projects">
+        <div class="container py-md-5 py-2">
+            <div class="header-secw3 text-center mb-5">
+                <h6 class="title-subhny mb-2">Características</h6>
+                <h3 class="title-w3l mb-4">Descubre Studentia</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mx-auto pe-lg-5">
+                    <div class="w3hny-business-img">
+                        <img src="{% static 'images/g8.jpg' %}" alt="Studentia Features" class="img-fluid radius-image">
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-lg-0 mt-sm-5 mt-4">
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <button id="accordion-button-1" aria-expanded="true"><span class="accordion-title">Gestión de Cursos</span><span class="icon" aria-hidden="true"></span></button>
+                            <div class="accordion-content">
+                                <p>Crea y gestiona cursos con códigos únicos para inscribir estudiantes fácilmente.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">Corrección con IA</span><span class="icon" aria-hidden="true"></span></button>
+                            <div class="accordion-content">
+                                <p>Automatiza la corrección de exámenes y actividades con inteligencia artificial.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">Reportes de Rendimiento</span><span class="icon" aria-hidden="true"></span></button>
+                            <div class="accordion-content">
+                                <p>Genera reportes detallados para analizar el rendimiento de los estudiantes.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Simulaciones</span><span class="icon" aria-hidden="true"></span></button>
+                            <div class="accordion-content">
+                                <p>Ofrece simulaciones interactivas para que los estudiantes practiquen antes de los exámenes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-clients" id="clients">
+        <div class="cusrtomer-layout py-5">
+            <div class="container py-lg-5 py-md-3">
+                <div class="testimonial-width">
+                    <div class="item">
+                        <div class="testimonial-content">
+                            <div class="testimonial">
+                                <blockquote>
+                                    <i class="fas fa-quote-left"></i>
+                                    <q>Studentia ha transformado mi forma de enseñar, ahorrándome horas de trabajo con sus herramientas de automatización.</q>
+                                </blockquote>
+                                <div class="testi-des">
+                                    <div class="peopl align-self">
+                                        <h3></h3>
+                                        <p class="indentity"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-project-main">
+        <div class="container">
+            <div class="w3l-project py-md-5 py-4">
+                <div class="row py-5 align-items-center">
+                    <div class="col-lg-6 w3l-project-right">
+                        <div class="bottom-info">
+                            <div class="header-section pr-lg-5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 w3l-project-left">
+                        <form action="#" method="post" class="subscribe-wthree mt-lg-5 mt-4">
+                            <div class="flex-wrap subscribe-wthree-field">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w3l-footer-29-main">
+        <div class="footer-29 py-5">
+            <div class="container py-lg-4">
+                <div class="row footer-top-29">
+                    <div class="col-lg-4 col-md-6 footer-list-29 footer-1 pe-lg-5">
+                        <div class="footer-logo mb-4">
+                            <h2><a class="navbar-brand" href="#"><span class="sublog">Studentia</span></a></h2>
+                        </div>
+                        <p>Plataforma educativa para optimizar la enseñanza y el aprendizaje con herramientas avanzadas.</p>
+                        <div class="w3l-two-buttons mt-4">
+                        </div>
+                        <div class="main-social-footer-29 mt-5">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-2 mt-sm-0 mt-5">
+                        <ul>
+                            <h6 class="footer-title-29">Enlaces</h6>
+                            <li><a href="#">Acerca de Nosotros</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-3 mt-lg-0 mt-5">
+                        <h6 class="footer-title-29">Funcionalidades</h6>
+                        <ul>
+                            <li><a href="#courses">Gestión de Cursos</a></li>
+                            <li><a href="#exams">Exámenes</a></li>
+                            <li><a href="#reports">Reportes</a></li>
+                            <li><a href="#simulations">Simulaciones</a></li>
+                            <li><a href="#notifications">Notificaciones</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-4 mt-lg-0 mt-5">
+                        
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-4 mt-lg-0 mt-5">
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="w3l-copyright text-center">
+            <div class="container">
+                <p class="copy-footer-29">© 2025 Studentia. Todos los derechos reservados. Desarrollado por <a href="https://x.ai/" target="_blank">xAI</a></p>
+            </div>
+            <button onclick="topFunction()" id="movetop" title="Go to top">
+                <span class="fas fa-arrow-up"></span>
+            </button>
+        </section>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <!-- Removed theme-change.js since dark mode toggle is no longer present -->
+    <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    <!-- faq -->
+    <script>
+        const items = document.querySelectorAll(".accordion button");
+
+        function toggleAccordion() {
+            const itemToggle = this.getAttribute('aria-expanded');
+            for (let i = 0; i < items.length; i++) {
+                items[i].setAttribute('aria-expanded', 'false');
+            }
+            if (itemToggle == 'false') {
+                this.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        items.forEach(item => item.addEventListener('click', toggleAccordion));
+    </script>
+    <!-- move top -->
+    <script>
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}

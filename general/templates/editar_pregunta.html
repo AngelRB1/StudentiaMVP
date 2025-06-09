@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agregar Pregunta - {{ examen.titulo }}{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 40px 50px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        width: 100%;
+        font-family: 'Poppins', sans-serif;
+        color: #1A3C5A;
+    }
+
+    .custom-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #1A3C5A;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    label {
+        font-weight: 600;
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    select, input[type="text"], textarea {
+        border: 2px solid #1A3C5A;
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+        font-size: 1.1rem;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        border-radius: 12px !important;
+        resize: vertical;
+        font-size: 1rem;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+
+    small.form-text {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    #opciones-multiples > h4,
+    #opcion-vf > h4 {
+        margin-bottom: 15px;
+        font-weight: 700;
+        color: #1A3C5A;
+    }
+
+    #opciones-multiples .border {
+        border: 2px solid #1A3C5A !important;
+        background-color: #F5F8FF;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    #opciones-multiples .form-check,
+    #opcion-vf .form-check {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+        border: 2px solid #1A3C5A;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        position: relative;
+    }
+
+    input[type="checkbox"]:checked,
+    input[type="radio"]:checked {
+        background-color: #1A3C5A;
+        border-color: #1A3C5A;
+    }
+
+    input[type="checkbox"]:checked::after,
+    input[type="radio"]:checked::after {
+        content: '\2713';
+        color: #FFFFFF;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .btn {
+        background-color: #1A3C5A !important;
+        border: none !important;
+        padding: 10px 22px;
+        border-radius: 8px !important;
+        transition: background-color 0.3s ease !important;
+        color: #FFFFFF !important;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #FF5733 !important;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d !important;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268 !important;
+    }
+
+    .alert-info {
+        max-width: 700px;
+        margin: 0 auto 20px auto;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        border-left: 5px solid #1A3C5A;
+        border-radius: 8px;
+        background-color: #E9ECEF;
+        padding: 15px;
+    }
+
+    .alert-info strong {
+        color: #1A3C5A;
+    }
+
+    .alert {
+        max-width: 700px;
+        margin: 20px auto;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        border-left: 5px solid #1A3C5A;
+        border-radius: 8px;
+    }
+
+    .close {
+        font-size: 1.2rem;
+        opacity: 0.7;
+        border: none;
+        background: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        <h2 class="custom-title">Editar Pregunta de: {{ examen.titulo }}</h2>
+
+        <!-- Mensajes flash -->
+        {% if messages %}
+            <div>
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Tipo de pregunta -->
+            <div class="form-group">
+                {{ pregunta_form.tipo.label_tag }}
+                {{ pregunta_form.tipo }}
+                {% if pregunta_form.tipo.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ pregunta_form.tipo.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Texto de la pregunta -->
+            <div class="form-group">
+                {{ pregunta_form.texto.label_tag }}
+                {{ pregunta_form.texto }}
+                {% if pregunta_form.texto.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ pregunta_form.texto.errors }}
+                    </div>
+                {% endif %}
+                <small class="form-text text-muted">Ingrese el enunciado de la pregunta</small>
+            </div>
+
+            <!-- Opciones para opción múltiple -->
+            <div id="opciones-multiples" class="mb-4" style="display:none;">
+                <h4>Opciones (mínimo 2, máximo 5):</h4>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="mb-3 border p-3 rounded bg-light">
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        <div class="form-group">
+                            {{ form.texto.label_tag }}
+                            {{ form.texto }}
+                            {% if form.texto.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.texto.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group form-check">
+                            {{ form.es_correcta }}
+                            <label for="{{ form.es_correcta.id_for_label }}">{{ form.es_correcta.label }}</label>
+                            {% if form.es_correcta.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.es_correcta.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group form-check">
+                            {{ form.DELETE }}
+                            <label for="{{ form.DELETE.id_for_label }}">{{ form.DELETE.label }}</label>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="alert alert-info">
+                    <strong>Nota:</strong> Marque al menos una opción como correcta y complete mínimo 2 opciones.
+                </div>
+            </div>
+
+            <!-- Respuesta Verdadero/Falso -->
+            <div id="opcion-vf" class="mb-4" style="display:none;">
+                <h4>Respuesta Verdadero/Falso</h4>
+                <div class="form-group">
+                    {% for radio in vf_form.respuesta %}
+                    <div class="form-check">
+                        {{ radio.tag }}
+                        <label class="form-check-label" for="{{ radio.id_for_label }}">
+                            {{ radio.choice_label }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                    {% if vf_form.respuesta.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ vf_form.respuesta.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Guardar Pregunta</button>
+                <a href="{% url 'listar_preguntas' examen.slug %}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    const hasErrors = {% if pregunta_form.errors or formset.errors or vf_form.errors %}true{% else %}false{% endif %};
+    const tipoError = {% if pregunta_form.errors or formset.errors or vf_form.errors %}"{{ request.POST.tipo|default:'' }}"{% else %}""{% endif %};
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const tipoSelect = document.querySelector('select[name="tipo"]');
+        const opcionesMultiples = document.getElementById('opciones-multiples');
+        const opcionVF = document.getElementById('opcion-vf');
+
+        function actualizarVista() {
+            const tipo = tipoSelect.value;
+            opcionesMultiples.style.display = 'none';
+            opcionVF.style.display = 'none';
+
+            if (tipo === 'opcion_multiple') {
+                opcionesMultiples.style.display = 'block';
+            } else if (tipo === 'verdadero_falso') {
+                opcionVF.style.display = 'block';
+            }
+        }
+
+        tipoSelect.addEventListener('change', actualizarVista);
+        actualizarVista();
+
+        if (hasErrors && tipoError) {
+            tipoSelect.value = tipoError;
+            actualizarVista();
+        }
+    });
+</script>
+{% endblock %}

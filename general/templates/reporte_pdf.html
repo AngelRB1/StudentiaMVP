@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ reporte.titulo }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .encabezado {
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .encabezado h1 {
+            color: #007bff;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        
+        .encabezado h2 {
+            color: #6c757d;
+            margin: 0;
+            font-size: 18px;
+            font-weight: normal;
+        }
+        
+        .seccion-info {
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .fila-info {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        
+        .etiqueta {
+            font-weight: bold;
+            width: 150px;
+            color: #495057;
+        }
+        
+        .valor {
+            flex: 1;
+        }
+        
+        h3 {
+            color: #007bff;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-size: 12px;
+        }
+        
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .aprobado { 
+            color: #28a745; 
+            font-weight: bold;
+        }
+        
+        .en-riesgo { 
+            color: #ffc107; 
+            font-weight: bold;
+        }
+        
+        .reprobado { 
+            color: #dc3545; 
+            font-weight: bold;
+        }
+        
+        .estadisticas {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            gap: 15px;
+        }
+        
+        .caja-estadistica {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .caja-estadistica h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .caja-estadistica .numero {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .numero.aprobados { color: #28a745; }
+        .numero.riesgo { color: #ffc107; }
+        .numero.reprobados { color: #dc3545; }
+        .numero.total { color: #007bff; }
+        .numero.promedio { color: #6f42c1; }
+        
+        .pie-pagina {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 10px;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+        
+        .sin-datos {
+            text-align: center;
+            padding: 50px;
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .sin-datos h3 {
+            color: #856404;
+            border: none;
+            margin: 0 0 15px 0;
+        }
+        
+        .sin-datos p {
+            color: #856404;
+            margin: 0;
+        }
+        
+        .promedio-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .promedio-alto { background-color: #28a745; }
+        .promedio-medio { background-color: #ffc107; color: #212529; }
+        .promedio-bajo { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="encabezado">
+        <h1>{{ reporte.titulo }}</h1>
+        <h2>Studentia - Reporte de Rendimiento Académico</h2>
+    </div>
+
+    <div class="seccion-info">
+        <div class="fila-info">
+            <span class="etiqueta">Curso:</span>
+            <span class="valor">{{ reporte.curso.nombre_curso }}</span>
+        </div>
+        <div class="fila-info">
+            <span class="etiqueta">Docente:</span>
+            <span class="valor">
+                {% if reporte.docente.first_name and reporte.docente.last_name %}
+                    {{ reporte.docente.first_name }} {{ reporte.docente.last_name }}
+                {% elif reporte.docente.first_name %}
+                    {{ reporte.docente.first_name }}
+                {% else %}
+                    {{ reporte.docente.username }}
+                {% endif %}
+            </span>
+        </div>
+        <div class="fila-info">
+            <span class="etiqueta">Período Evaluado:</span>
+            <span class="valor">{{ reporte.fecha_inicio|date:"d/m/Y" }} - {{ reporte.fecha_fin|date:"d/m/Y" }}</span>
+        </div>
+        <div class="fila-info">
+            <span class="etiqueta">Fecha de Generación:</span>
+            <span class="valor">{{ reporte.fecha_creacion|date:"d/m/Y H:i" }}</span>
+        </div>
+    </div>
+
+    {% if promedios_estudiantes %}
+        <h3>Rendimiento Individual por Estudiante</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Estudiante</th>
+                    <th style="width: 20%;">Promedio General</th>
+                    <th style="width: 20%;">Prom. Actividades</th>
+                    <th style="width: 20%;">Prom. Exámenes</th>
+                    <th style="width: 10%;">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for datos in promedios_estudiantes %}
+                <tr>
+                    <td>
+                        {% if datos.estudiante.first_name and datos.estudiante.last_name %}
+                            {{ datos.estudiante.first_name }} {{ datos.estudiante.last_name }}
+                        {% elif datos.estudiante.first_name %}
+                            {{ datos.estudiante.first_name }}
+                        {% else %}
+                            {{ datos.estudiante.username }}
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="promedio-badge {% if datos.promedio >= 70 %}promedio-alto{% elif datos.promedio >= 60 %}promedio-medio{% else %}promedio-bajo{% endif %}">
+                            {{ datos.promedio }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        {% if datos.promedio_envios %}
+                            {{ datos.promedio_envios }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        {% if datos.promedio_examenes %}
+                            {{ datos.promedio_examenes }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        {% if datos.promedio >= 70 %}
+                            <span class="aprobado">Aprobado</span>
+                        {% elif datos.promedio >= 60 %}
+                            <span class="en-riesgo">En Riesgo</span>
+                        {% else %}
+                            <span class="reprobado">Reprobado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Estadísticas Generales del Curso</h3>
+        <div class="estadisticas">
+            <div class="caja-estadistica">
+                <h4>Total de Estudiantes</h4>
+                <p class="numero total">{{ total_estudiantes }}</p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>Promedio General</h4>
+                <p class="numero promedio">{{ promedio_general }}</p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>Estudiantes Aprobados</h4>
+                <p class="numero aprobados">{{ aprobados }}</p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>En Riesgo</h4>
+                <p class="numero riesgo">{{ en_riesgo }}</p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>Reprobados</h4>
+                <p class="numero reprobados">{{ reprobados }}</p>
+            </div>
+        </div>
+
+        <div class="estadisticas">
+            <div class="caja-estadistica">
+                <h4>Tasa de Aprobación</h4>
+                <p class="numero aprobados">
+                    {% if total_estudiantes > 0 %}
+                        {% widthratio aprobados total_estudiantes 100 %}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>Tasa de Riesgo</h4>
+                <p class="numero riesgo">
+                    {% if total_estudiantes > 0 %}
+                        {% widthratio en_riesgo total_estudiantes 100 %}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </p>
+            </div>
+            <div class="caja-estadistica">
+                <h4>Tasa de Reprobación</h4>
+                <p class="numero reprobados">
+                    {% if total_estudiantes > 0 %}
+                        {% widthratio reprobados total_estudiantes 100 %}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <h3>Análisis y Recomendaciones</h3>
+        <div style="background-color: #e7f3ff; padding: 20px; border-radius: 5px; border-left: 5px solid #007bff;">
+            {% if promedio_general >= 80 %}
+                <p><strong>Excelente rendimiento general del curso.</strong> El promedio de {{ promedio_general }} indica un alto nivel de comprensión y desempeño por parte de los estudiantes.</p>
+            {% elif promedio_general >= 70 %}
+                <p><strong>Buen rendimiento general del curso.</strong> El promedio de {{ promedio_general }} muestra un desempeño satisfactorio, aunque hay oportunidades de mejora.</p>
+            {% elif promedio_general >= 60 %}
+                <p><strong>Rendimiento moderado del curso.</strong> El promedio de {{ promedio_general }} sugiere la necesidad de estrategias de refuerzo académico.</p>
+            {% else %}
+                <p><strong>Rendimiento bajo del curso.</strong> El promedio de {{ promedio_general }} requiere atención inmediata y estrategias de intervención académica.</p>
+            {% endif %}
+            
+            {% if reprobados > 0 %}
+                <p><strong>Atención especial:</strong> {{ reprobados }} estudiante{{ reprobados|pluralize }} requiere{{ reprobados|pluralize:"n" }} apoyo adicional para mejorar su rendimiento académico.</p>
+            {% endif %}
+            
+            {% if en_riesgo > 0 %}
+                <p><strong>Seguimiento recomendado:</strong> {{ en_riesgo }} estudiante{{ en_riesgo|pluralize }} se encuentra{{ en_riesgo|pluralize:"n" }} en riesgo y podrían beneficiarse de tutorías o actividades de refuerzo.</p>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="sin-datos">
+            <h3>Sin Datos Disponibles</h3>
+            <p>No hay calificaciones registradas para el período seleccionado ({{ reporte.fecha_inicio|date:"d/m/Y" }} - {{ reporte.fecha_fin|date:"d/m/Y" }}).</p>
+            <p>Verifique que las actividades y exámenes estén calificados dentro de este rango de fechas.</p>
+        </div>
+    {% endif %}
+
+    <div class="pie-pagina">
+        <p>
+            <strong>Studentia</strong><br>
+            Reporte generado automáticamente el {{ reporte.fecha_creacion|date:"d/m/Y" }} a las {{ reporte.fecha_creacion|date:"H:i" }}<br>
+            Este documento contiene información confidencial del curso {{ reporte.curso.nombre_curso }}
+        </p>
+    </div>
+</body>
+</html>

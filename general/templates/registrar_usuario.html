@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+     <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+     <style>
+         .custom-section {
+             background: #FFFFFF; /* Fondo blanco como en la imagen */
+             border-radius: 15px;
+             padding: 30px;
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+         }
+         .custom-title {
+             color: #1A3C5A !important; /* Azul oscuro de la imagen */
+             font-size: 2.8rem !important;
+             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+         }
+         .custom-form p input,
+         .custom-form p select,
+         .custom-form p textarea {
+             border: 2px solid #1A3C5A !important; /* Borde azul oscuro de la imagen */
+             border-radius: 8px !important;
+             padding: 12px !important;
+             width: 100% !important;
+             transition: border-color 0.3s ease !important;
+         }
+         .custom-form p input:focus,
+         .custom-form p select:focus,
+         .custom-form p textarea:focus {
+             border-color: #FF5733 !important; /* Naranja al hacer foco, como el hover de la imagen */
+             outline: none !important;
+         }
+         .custom-form p label {
+             color: #4A4A4A !important; /* Gris oscuro para etiquetas, como el texto secundario de la imagen */
+             font-weight: 600 !important;
+             font-size: 1.1rem !important;
+         }
+         .custom-button {
+             background-color: #1A3C5A !important; /* Botón azul oscuro de la imagen */
+             border: none !important;
+             padding: 12px 30px !important;
+             font-size: 1.2rem !important;
+             border-radius: 25px !important;
+             transition: background-color 0.3s ease !important;
+         }
+         .custom-button:hover {
+             background-color: #FF5733 !important; /* Naranja al pasar el mouse, como en la imagen */
+         }
+     </style>
+ {% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-5">
+            <h3 class="title-subhny custom-title">Registrarse</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="custom-section">
+                    {% if form.errors %}
+                        <div id="error-login" class="alert alert-danger mb-4">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    {{ error }}<br>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="POST" class="contact-form custom-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <p>
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            <small class="error-message">Este campo es obligatorio.</small>
+                        </p>
+
+                        <p>
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                            <small class="error-message" id="email-error" style="display:none; color: red;">Por favor ingresa un correo válido.</small>
+                        </p>                        
+                        
+                        <p>
+                            {{ form.rol.label_tag }}
+                            {{ form.rol }}
+                            <small class="error-message">Este campo es obligatorio.</small>
+                        </p>
+
+                        <p>
+                            {{ form.sobre_mi.label_tag }}
+                            {{ form.sobre_mi }}
+                            <small class="error-message">Este campo es obligatorio.</small>
+                        </p>
+
+                        <p>
+                            {{ form.foto_perfil.label_tag }}
+                            {{ form.foto_perfil }}
+                            <small class="error-message">Este campo es obligatorio.</small>
+                        </p>
+
+                        <p>
+                            {{ form.password1.label_tag }}
+                            {{ form.password1 }}
+                            <small class="error-message">La contraseña debe tener al menos 8 caracteres.</small>
+                        </p>
+
+                        <p>
+                            {{ form.password2.label_tag }}
+                            {{ form.password2 }}
+                            <small class="error-message">Las contraseñas deben coincidir.</small>
+                        </p>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-style btn-primary custom-button">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const password1 = document.querySelector('input[name="password1"]');
+    const password2 = document.querySelector('input[name="password2"]');
+    const errorLogin = document.getElementById('error-login');
+
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+        const errorMessage = input.parentElement.querySelector('.error-message');
+        let touched = false;
+
+        input.addEventListener('blur', () => {
+            touched = true;
+            validate(input, errorMessage);
+        });
+
+        input.addEventListener('input', () => {
+            if (touched) {
+                validate(input, errorMessage);
+            }
+            if (errorLogin) {
+                errorLogin.remove();
+            }
+        });
+
+        function validate(field, errorEl) {
+            if (field.name === "password1") {
+                errorEl.style.display = field.value.length < 8 ? 'block' : 'none';
+            } else if (field.name === "password2") {
+                errorEl.style.display = field.value !== password1.value ? 'block' : 'none';
+            } else {
+                errorEl.style.display = field.value.trim() === "" ? 'block' : 'none';
+            }
+        }
+    });
+</script>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const emailField = form.querySelector('input[type="email"]');
+    const errorMessage = document.getElementById('email-error');
+
+    // Expresión regular para validar el correo electrónico
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Validación en tiempo real mientras el usuario escribe
+    emailField.addEventListener('input', function () {
+        const emailValue = emailField.value.trim();
+        if (emailRegex.test(emailValue)) {
+            errorMessage.style.display = 'none'; // Oculta el mensaje de error
+            emailField.style.borderColor = '#1A3C5A'; // Restaura el borde original (color azul)
+        } else {
+            errorMessage.style.display = 'block'; // Muestra el mensaje de error
+            errorMessage.textContent = 'Por favor ingresa un correo electrónico válido (sin espacios y sin caracteres no permitidos).';
+            emailField.style.borderColor = 'red'; // Borde rojo mientras no sea válido
+        }
+    });
+
+    // Validación antes de enviar el formulario
+    form.addEventListener('submit', function(event) {
+        const emailValue = emailField.value.trim();
+
+        // Si el correo es inválido, muestra el error y evita el envío del formulario
+        if (!emailRegex.test(emailValue)) {
+            event.preventDefault();
+            errorMessage.style.display = 'block'; // Asegúrate de que el mensaje se muestre
+            errorMessage.textContent = 'Por favor ingresa un correo electrónico válido (sin espacios y sin caracteres no permitidos).';
+            emailField.style.borderColor = 'red'; // Borde rojo al enviar si es inválido
+        }
+    });
+
+    // Evitar que el mensaje de error se borre cuando el campo pierde el foco
+    emailField.addEventListener('blur', function() {
+        if (!emailRegex.test(emailField.value.trim())) {
+            errorMessage.style.display = 'block'; // Asegúrate de que el mensaje permanezca visible
+            emailField.style.borderColor = 'red'; // Mantener el borde rojo
+        }
+    });
+});
+
+
+
+</script>
+
+
+{% endblock %}

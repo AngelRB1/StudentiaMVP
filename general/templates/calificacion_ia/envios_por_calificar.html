@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% load static %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #F5F8FF;
+        padding-top: 80px; /* Adjust for fixed-top header */
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #1A3C5A;
+    }
+    .card {
+        background: #F0F4FA;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #1A3C5A;
+    }
+    .card-header {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0;
+        padding: 15px;
+    }
+    .card-header.bg-primary {
+        background-color: #1A3C5A !important;
+        color: #FFFFFF !important;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+    .breadcrumb-item a {
+        color: #1A3C5A;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .breadcrumb-item a:hover {
+        color: #FF5733;
+    }
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 600;
+    }
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    .table th,
+    .table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+    .table thead th {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+    }
+    .table tbody tr:hover {
+        background-color: #E8EDF5;
+    }
+    .btn {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-primary {
+        background-color: #1A3C5A;
+        border-color: #1A3C5A;
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background-color: #FF5733;
+        border-color: #FF5733;
+    }
+    .btn-outline-secondary {
+        color: #1A3C5A;
+        border-color: #1A3C5A;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #1A3C5A;
+        color: #fff;
+    }
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.875rem;
+        border-radius: 15px;
+    }
+    .btn-light {
+        background-color: #fff;
+        color: #1A3C5A;
+        border: 1px solid #1A3C5A;
+    }
+    .btn-light:hover {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+    }
+    .alert-info {
+        background-color: #F0F4FA;
+        border-left: 5px solid #1A3C5A;
+        border-radius: 12px;
+        padding: 20px;
+        color: #333;
+        text-align: center;
+    }
+    .text-muted {
+        color: #6c757d;
+    }
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+    .shadow-sm {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'board' codigo_acceso=curso.codigo_acceso %}">{{ curso.nombre_curso }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'actividades_calificables_ia' codigo_acceso=curso.codigo_acceso %}">Calificar con IA</a></li>
+            <li class="breadcrumb-item active">{{ actividad.titulo }}</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Envíos pendientes: {{ actividad.titulo }}</h4>
+            {% if envios %}
+                <a href="{% url 'calificar_todos_ia' codigo_acceso=curso.codigo_acceso id_actividad=actividad.id %}" class="btn btn-light">
+                    Calificar todos con IA
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if envios %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Estudiante</th>
+                                <th>Fecha de envío</th>
+                                <th>Archivo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for envio in envios %}
+                                <tr>
+                                    <td>{{ envio.alumno.username }}</td>
+                                    <td>{{ envio.fecha|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        <a href="{{ envio.archivo.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                            Ver archivo
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'calificar_envio_ia' codigo_acceso=curso.codigo_acceso id_envio=envio.id %}" class="btn btn-sm btn-primary">
+                                            Calificar con IA
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    No hay envíos pendientes para esta actividad.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Detalles de la actividad</h5>
+        </div>
+        <div class="card-body">
+            <h5>{{ actividad.titulo }}</h5>
+            <p class="text-muted">Fecha de creación: {{ actividad.fecha|date:"d/m/Y H:i" }}</p>
+            
+            {% if actividad.fecha_limite %}
+                <p class="text-muted">Fecha límite: {{ actividad.fecha_limite|date:"d/m/Y H:i" }}</p>
+            {% endif %}
+            
+            <div class="mt-3">
+                {{ actividad.contenido|linebreaks }}
+            </div>
+            
+            {% if actividad.criterios_calificacion %}
+                <div class="mt-4">
+                    <h6>Criterios de calificación:</h6>
+                    <div class="p-3 bg-light rounded">
+                        {{ actividad.criterios_calificacion|linebreaks }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

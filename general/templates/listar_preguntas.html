@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+    }
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2.5rem !important;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .question-list {
+        list-style: none;
+        padding: 0;
+        max-width: 700px;
+        margin: 0 auto 30px auto;
+        text-align: left;
+    }
+    .question-list li {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.1rem;
+        color: #1A3C5A;
+        font-weight: 600;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        transition: background-color 0.3s ease;
+    }
+    .question-list li:hover {
+        background-color: #e9ecef;
+    }
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .btn-custom {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .btn-warning:hover {
+        background-color: #e0a800;
+        color: #fff;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+        color: #fff;
+    }
+    .btn-primary {
+        background-color: #1A3C5A;
+        color: #fff;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    .btn-primary:hover {
+        background-color: #FF5733;
+        color: #fff;
+    }
+    .btn-icon {
+        font-size: 1.2rem;
+        padding: 6px 12px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} fade show">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+        
+        <h2 class="custom-title">Preguntas del Examen: {{ examen.titulo }}</h2>
+
+        {% if preguntas %}
+            <ul class="question-list">
+                {% for pregunta in preguntas %}
+                    <li>
+                        {{ pregunta.texto }}
+                        <div class="btn-group">
+                            <a href="{% url 'editar_pregunta' examen.slug pregunta.id %}" 
+                               class="btn-custom btn-warning btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'eliminar_pregunta' examen.slug pregunta.id %}" 
+                               class="btn-custom btn-danger btn-icon" title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay preguntas aún.</p>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <a href="{% url 'agregar_pregunta' examen.slug %}" class="btn-custom btn-primary">Agregar Pregunta</a>
+            <a href="{% url 'board' examen.curso.codigo_acceso %}" class="btn-custom btn-primary">Volver al Curso</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Curso{% endblock %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF; /* Fondo blanco */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px; /* Mismo ancho que "Editar Perfil" */
+            margin: 0 auto;
+        }
+        .custom-title {
+            color: #1A3C5A !important; /* Azul oscuro */
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px; /* Espacio debajo del título */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            text-align: center;
+        }
+        .custom-form .form-group input,
+        .custom-form .form-group textarea {
+            border: 2px solid #1A3C5A !important; /* Borde azul oscuro */
+            border-radius: 8px !important;
+            padding: 12px !important;
+            width: 100% !important;
+            max-width: 400px; /* Centrado y ancho consistente */
+            margin: 0 auto; /* Centrado */
+            transition: border-color 0.3s ease !important;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            display: block;
+            box-sizing: border-box;
+        }
+        .custom-form .form-group input:focus,
+        .custom-form .form-group textarea:focus {
+            border-color: #FF5733 !important; /* Naranja al hacer foco */
+            outline: none !important;
+        }
+        .custom-form .form-group label {
+            color: #4A4A4A !important; /* Gris oscuro para etiquetas */
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 5px auto;
+        }
+        .custom-form .form-group .help-text {
+            color: #4A4A4A !important;
+            font-size: 0.9rem !important;
+            margin-top: 5px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .custom-button {
+            background-color: #1A3C5A !important; /* Botón azul oscuro */
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin-right: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .custom-button:hover {
+            background-color: #FF5733 !important; /* Naranja al hover */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="text-center">
+            <div class="custom-section">
+                <h2 class="custom-title">Editar Curso: {{ curso.nombre_curso }}</h2>
+                <form method="post" class="custom-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group mb-4">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="help-text">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="text-center mt-4">
+                        <button type="submit" class="custom-button">Guardar Cambios</button>
+                        <a href="{% url 'dashboard' %}" class="custom-button">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}

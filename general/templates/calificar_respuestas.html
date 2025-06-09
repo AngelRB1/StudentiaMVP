@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 50px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2rem !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    form p {
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    form label {
+        color: #1A3C5A !important;
+        font-weight: 600;
+        font-size: 1.1rem !important;
+        font-family: 'Poppins', sans-serif;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form .inline-label {
+        display: inline;
+        margin: 0;
+        font-weight: normal;
+        font-size: 1rem;
+    }
+
+    form input[type="number"],
+    form textarea {
+        border: 2px solid #1A3C5A;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        max-width: 600px;
+        transition: border-color 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+    }
+
+    form textarea {
+        border-radius: 12px !important;
+        padding: 10px;
+        width: 100%;
+        resize: vertical;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+    }
+
+    .question-block {
+        background-color: #d3d9e8; /* azul marino bajito */
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(26, 60, 90, 0.2);
+        color: #1A3C5A; /* azul marino */
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+    }
+
+    .custom-button {
+        background-color: #1A3C5A !important; /* azul marino */
+        border: none !important;
+        padding: 14px 30px;
+        border-radius: 8px !important;
+        transition: background-color 0.3s ease !important;
+        color: #FFFFFF !important;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        text-decoration: none !important;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 600;
+    }
+
+    .custom-button:hover {
+        background-color: #FF5733 !important; /* naranja */
+    }
+
+    a.custom-button {
+        line-height: 38px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        <h2 class="custom-title">Calificar respuestas: {{ examen.titulo }}</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for respuesta in respuestas %}
+                <div class="question-block">
+                    <p><strong>Pregunta:</strong> {{ respuesta.pregunta.texto }}</p>
+
+                    <p><strong>Respuesta del estudiante:</strong>
+                        {% if respuesta.respuesta_texto %}
+                            {{ respuesta.respuesta_texto }}
+                        {% elif respuesta.opcion_seleccionada %}
+                            {{ respuesta.opcion_seleccionada.texto }}
+                        {% else %}
+                            <em>Sin respuesta</em>
+                        {% endif %}
+                    </p>
+
+                    {% if respuesta.pregunta.tipo != 'abierta' %}
+                        {% with respuesta.pregunta.opcion_set.all as opciones %}
+                            {% for opcion in opciones %}
+                                {% if opcion.es_correcta %}
+                                    <p><strong>Respuesta correcta:</strong> {{ opcion.texto }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    {% endif %}
+
+                    <label for="puntaje_{{ respuesta.id }}">Puntaje (0-100):</label>
+                    <input type="number" name="puntaje_{{ respuesta.id }}" min="0" max="100" required>
+
+                    <label for="comentario_{{ respuesta.id }}">Comentario:</label>
+                    <textarea name="comentario_{{ respuesta.id }}"></textarea>
+                </div>
+            {% endfor %}
+
+            <div class="button-group">
+                <button type="submit" class="custom-button">Guardar Calificación</button>
+                <a href="{% url 'seleccionar_estudiante' slug=examen.slug %}" class="custom-button">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

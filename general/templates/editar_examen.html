@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Examen - {{ examen.titulo }}{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 50px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2rem !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-bottom: 40px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    form p, form label {
+        text-align: left;
+        max-width: 600px;
+        margin: 0 auto 20px auto;
+        font-family: 'Poppins', sans-serif;
+        color: #1A3C5A !important;
+    }
+
+    form label {
+        font-weight: 600;
+        font-size: 1.1rem !important;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form input,
+    form textarea,
+    form select {
+        border: 2px solid #1A3C5A;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        max-width: 600px;
+        transition: border-color 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+    }
+
+    form textarea {
+        border-radius: 12px !important;
+        padding: 10px;
+        width: 100%;
+        resize: vertical;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+    }
+
+    form input[type="checkbox"] {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #1A3C5A;
+        border-radius: 4px;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        position: relative;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    form input[type="checkbox"]:checked {
+        background-color: #1A3C5A;
+        border-color: #1A3C5A;
+    }
+
+    form input[type="checkbox"]:checked::after {
+        content: '✔';
+        color: white;
+        font-size: 12px;
+        position: absolute;
+        left: 2px;
+        top: -1px;
+    }
+
+    .checkbox-block {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .custom-button,
+    .btn {
+        background-color: #1A3C5A !important;
+        border: none !important;
+        padding: 10px 20px;
+        border-radius: 8px !important;
+        transition: background-color 0.3s ease !important;
+        color: #FFFFFF !important;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        text-decoration: none !important;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .custom-button:hover,
+    .btn:hover {
+        background-color: #FF5733 !important;
+    }
+
+    ul.messages {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 20px auto 0 auto;
+        text-align: left;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    ul.messages li {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: #ffdddd;
+        color: #900;
+        border: 1px solid #900;
+    }
+
+    ul.messages li.success {
+        background-color: #ddffdd;
+        color: #090;
+        border-color: #090;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        <h2 class="custom-title">Editar Examen: {{ examen.titulo }}</h2>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            {# Aquí está el formulario renderizado con as_p para mantener la estructura del form Django #}
+            {{ form.as_p }}
+
+            <div class="button-group">
+                <a href="{% url 'listar_preguntas' examen.slug %}" class="custom-button btn btn-info">Preguntas</a>
+                <button type="submit" class="custom-button btn btn-primary">Guardar</button>
+                <a href="{% url 'board' examen.curso.codigo_acceso %}" class="custom-button btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

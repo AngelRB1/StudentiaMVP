@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block title %}{{ curso.nombre_curso }}{% endblock %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        .custom-subtitle {
+            color: #1A3C5A !important;
+            font-size: 1.8rem !important;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .course-details {
+            color: #4A4A4A !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .course-details strong {
+            color: #1A3C5A !important;
+            font-weight: 600;
+        }
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 600px;
+            text-align: left;
+        }
+        .activity-list li {
+            color: #4A4A4A !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .activity-list li strong {
+            color: #1A3C5A !important;
+            font-weight: 600;
+        }
+        .activity-list li a {
+            color: #1A3C5A !important;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .activity-list li a:hover {
+            color: #FF5733 !important;
+        }
+        .badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            margin-left: 5px;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+            color: #FFFFFF !important;
+        }
+        .badge.bg-warning {
+            background-color: #F5A623 !important;
+            color: #FFFFFF !important;
+        }
+        .badge.bg-info {
+            background-color: #17a2b8 !important;
+            color: #FFFFFF !important;
+        }
+        .text-muted {
+            color: #4A4A4A !important;
+            font-size: 0.9rem !important;
+            font-family: 'Poppins', sans-serif;
+        }
+        .empty-message {
+            color: #4A4A4A !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 20Vulnerability: none;
+        }
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+        .custom-button--sm {
+            padding: 8px 15px !important;
+            font-size: 1rem !important;
+            border-radius: 50%; /* Hacer botones circulares */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .custom-button--view {
+            background-color: #a855f7 !important;
+            color: #FFFFFF !important;
+        }
+        .custom-button--edit {
+            background-color: #F5A623 !important;
+            color: #FFFFFF !important;
+        }
+        .custom-button--delete {
+            background-color: #dc3545 !important;
+            color: #FFFFFF !important;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        .custom-button i {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .custom-button--report {
+            background-color: #4CAF50 !important; /* Verde para reportes */
+            color: #FFFFFF !important;
+        }
+        .custom-button--report:hover {
+            background-color: #45a049 !important;
+        }
+        
+        .custom-button--ai {
+            background-color: #6366f1 !important; /* Azul índigo para IA */
+            color: #FFFFFF !important;
+        }
+        .custom-button--ai:hover {
+            background-color: #4f46e5 !important;
+        }
+
+        /* Estilo para el dropdown */
+        .custom-dropdown {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 20px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            color: #FFFFFF !important;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            appearance: none; /* Quitar el estilo por defecto del navegador */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            width: 300px; /* Ajustar ancho según sea necesario */
+            cursor: pointer;
+        }
+        .custom-dropdown option {
+            background-color: #FFFFFF !important;
+            color: #1A3C5A !important;
+            font-family: 'Poppins', sans-serif;
+        }
+        .custom-dropdown:hover {
+            background-color: #FF5733 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="text-center">
+            <div class="custom-section">
+                <h2 class="custom-title">{{ curso.nombre_curso }}</h2>
+                <p class="course-details"><strong>Profesor:</strong> {{ curso.id_profesor.username }}</p>
+                <p class="course-details"><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+
+                {% if request.user == curso.id_profesor %}
+                    <h3 class="custom-subtitle">Acciones Rápidas</h3>
+                    <select class="custom-dropdown" onchange="if (this.value) window.location.href=this.value;">
+                        <option value="" disabled selected>Selecciona una acción</option>
+                        <option value="{% url 'board_add_content' curso.codigo_acceso %}">Agregar Contenido</option>
+                        <option value="{% url 'board_view_students' curso.codigo_acceso %}">Ver alumnos inscritos</option>
+                        <option value="{% url 'crear_examen' curso.codigo_acceso %}">Crear Examen</option>
+                        <option value="{% url 'crear_examen_ia' curso.codigo_acceso %}">Crear Examen con IA</option>
+                        <option value="{% url 'examenes_por_calificar' curso.codigo_acceso %}">Calificar Exámenes</option>
+                        <option value="{% url 'lista_retroalimentacion' curso.codigo_acceso %}">Ver Retroalimentaciónes</option>
+                        <option value="{% url 'reportes_curso' curso.codigo_acceso %}">Reportes de Rendimiento</option>
+                        <option value="{% url 'calificar_actividades_ia' curso.codigo_acceso %}">Calificar Actividades con IA</option>
+                    </select>
+                {% else %}
+                    <h3 class="custom-subtitle">Acciones Rápidas</h3>
+                    <select class="custom-dropdown" onchange="if (this.value) window.location.href=this.value;">
+                        <option value="" disabled selected>Selecciona una acción</option>
+                        <option value="{% url 'board_view_students' curso.codigo_acceso %}">Ver alumnos inscritos</option>
+                        <option value="{% url 'lista_retroalimentacion' curso.codigo_acceso %}">Ver Retroalimentaciónes</option>
+                    </select>
+                {% endif %}
+                <h3 class="custom-subtitle">Lista de Examenes</h3>
+                {% if examenes %}
+                    <ul class="activity-list">
+                        {% for examen in examenes %}
+                            <li>
+                                <div>
+                                    <strong>{{ examen.titulo }}</strong> 
+                                    <span class="badge bg-primary">Examen</span>
+                                    {% if examen.entregas_tardias %}
+                                        <span class="badge bg-info">Permite entrega tardía</span>
+                                    {% endif %}
+                                    <br>
+                                    <small class="text-muted">
+                                        Disponible del {{ examen.fecha_inicio|date:"d M Y" }} al {{ examen.fecha_fin|date:"d M Y" }}.
+                                    </small>
+                                </div>
+                                <div class="button-group">
+                                    <a href="{% url 'ver_examen' examen.slug %}" class="custom-button custom-button--sm custom-button--view" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if request.user == curso.id_profesor %}
+                                        <a href="{% url 'editar_examen' examen.slug %}" class="custom-button custom-button--sm custom-button--edit" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'eliminar_examen' examen.slug %}" class="custom-button custom-button--sm custom-button--delete" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">No hay exámenes creados para este curso.</p>
+                {% endif %}
+                <h3 class="custom-subtitle">Tablero</h3>
+
+                {% if actividades %}
+                    <ul class="activity-list">
+                        {% for act in actividades %}
+                            <li>
+                                <div>
+                                    <strong>{{ act.titulo }}</strong> 
+                                    {% if act.archivo %}
+                                        - <a href="{{ act.archivo.url }}" target="_blank">Ver archivo</a>
+                                    {% endif %}
+                                    {% if act.entregable %}
+                                        <span class="badge bg-success">Entregable</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Contenido</span>
+                                    {% endif %}
+                                    {% if act.generado_por_ia %}
+                                        <span class="badge bg-warning text-dark">IA</span>
+                                    {% endif %}
+                                    {% if act.permite_entrega_tardia %}
+                                        <span class="badge bg-info">Permite entrega tardía</span>
+                                    {% endif %}
+                                    <br>
+                                    <small class="text-muted">
+                                        Publicado {{ act.fecha|naturaltime }} {{ act.fecha|date:'d M Y, H:i' }}.
+                                    </small>
+                                </div>
+                                <div class="button-group">
+                                    <a href="{% url 'content_detail' curso.codigo_acceso act.id %}" class="custom-button custom-button--sm custom-button--view" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if request.user == curso.id_profesor %}
+                                        <a href="{% url 'content_edit' curso.codigo_acceso act.id %}" class="custom-button custom-button--sm custom-button--edit" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'content_delete' curso.codigo_acceso act.id %}" class="custom-button custom-button--sm custom-button--delete" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">No hay actividades aún.</p>
+                {% endif %}
+                 <a href="{% url 'dashboard' %}" class="custom-button mt-3">Volver a Dashboard</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}

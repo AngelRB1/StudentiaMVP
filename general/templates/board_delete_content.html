@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Eliminar Actividad - {{ actividad.titulo }}{% endblock %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .custom-title {
+            color: #1A3C5A;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 10px 25px !important;
+            font-size: 1rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+
+        .danger-button {
+            background-color: #C0392B !important;
+        }
+
+        .danger-button:hover {
+            background-color: #E74C3C !important;
+        }
+
+        .custom-label {
+            font-size: 1.1rem;
+            color: #4A4A4A;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+  <div class="container py-md-5 py-4">
+    <div class="custom-section">
+        <h2 class="custom-title">¿Seguro que deseas eliminar esta actividad?</h2>
+        <p class="custom-label"><strong>{{ actividad.titulo }}</strong> - {{ actividad.curso.nombre_curso }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="custom-button danger-button">Sí, eliminar</button>
+            <a href="{% url 'board' actividad.curso.codigo_acceso %}" class="custom-button">Cancelar</a>
+        </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

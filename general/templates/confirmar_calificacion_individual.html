@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Calificación - {{ calificacion_ia.envio.alumno.username }} - Studentia{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #F5F8FF;
+        padding-top: 80px; /* Adjust for fixed-top header */
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #1A3C5A;
+    }
+    .titulo-reporte {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1A3C5A;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+        background-color: #1A3C5A;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #FF5733;
+        color: #fff;
+    }
+    .btn-secondary {
+        background-color: #1A3C5A;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #FF5733;
+        color: #fff;
+    }
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        border: none;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        color: #fff;
+    }
+    .btn-warning {
+        background-color: #ffc107;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        border: none;
+    }
+    .btn-warning:hover {
+        background-color: #e0a800;
+        color: #fff;
+    }
+    .btn-outline-primary {
+        color: #1A3C5A;
+        border-color: #1A3C5A;
+        padding: 5px 10px;
+        font-size: 0.875rem;
+        border-radius: 15px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-outline-primary:hover {
+        background-color: #1A3C5A;
+        color: #fff;
+    }
+    .btn-lg {
+        padding: 10px 24px;
+        font-size: 1.1rem;
+        border-radius: 20px;
+    }
+    .btn-volver {
+        padding: 10px 24px;
+        font-size: 1.1rem;
+        border-radius: 20px;
+        width: auto;
+        display: inline-block;
+    }
+    .card {
+        background: #F0F4FA;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #1A3C5A;
+    }
+    .card-header {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0;
+        padding: 15px;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .alert-primary {
+        background-color: #F0F4FA;
+        border-left: 5px solid #1A3C5A;
+        border-radius: 12px;
+        padding: 20px;
+        color: #333;
+        text-align: center;
+    }
+    .badge.bg-primary {
+        background-color: #1A3C5A !important;
+        font-size: 0.875rem;
+        padding: 6px 12px;
+        border-radius: 12px;
+    }
+    .form-label {
+        font-weight: 600;
+        color: #1A3C5A;
+    }
+    .form-check-label {
+        color: #333;
+    }
+    .form-text {
+        color: #6c757d;
+    }
+    .border {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+    .ms-2 {
+        margin-left: 0.5rem;
+    }
+    .small {
+        font-size: 0.875rem;
+    }
+    .text-muted {
+        color: #6c757d !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="custom-section">
+        {% if messages %}
+            {% for mensaje in messages %}
+                <div class="alert alert-{{ mensaje.tags }} alert-dismissible fade show" role="alert">
+                    {{ mensaje }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h2 class="titulo-reporte mb-4">Confirmar Calificación de Código</h2>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Calificación de Código por IA</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Estudiante:</strong> {{ calificacion_ia.envio.alumno.username }}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Actividad:</strong> {{ calificacion_ia.envio.actividad.titulo }}
+                            </div>
+                        </div>
+
+                        <div class="alert alert-primary">
+                            <h4 class="text-center">
+                                Calificación Sugerida: 
+                                <span class="badge bg-primary">{{ calificacion_ia.calificacion_sugerida }}/100</span>
+                            </h4>
+                        </div>
+
+                        <h6>Retroalimentación de IA:</h6>
+                        <div class="border p-3 mb-3">{{ calificacion_ia.retroalimentacion_ia|linebreaks }}</div>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">{{ form.accion.label }}</label>
+                                {% for radio in form.accion %}
+                                    <div class="form-check">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label" for="{{ radio.id_for_label }}">
+                                            {{ radio.choice_label }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.calificacion_ajustada.id_for_label }}" class="form-label">{{ form.calificacion_ajustada.label }}</label>
+                                {{ form.calificacion_ajustada }}
+                                <div class="form-text">
+                                    Deja vacío para usar la calificación sugerida por IA
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.comentarios_docente.id_for_label }}" class="form-label">{{ form.comentarios_docente.label }}</label>
+                                {{ form.comentarios_docente }}
+                            </div>
+
+                            <div class="text-center mb-3">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-check"></i> Confirmar Calificación
+                                </button>
+                                <button type="button" class="btn btn-warning btn-lg ms-2" onclick="selectRevisar()">
+                                    <i class="fas fa-eye"></i> Revisar Manualmente
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <a href="{% url 'revisar_calificaciones_ia' curso.codigo_acceso calificacion_ia.envio.actividad.id %}" class="btn btn-secondary btn-volver">
+                                    Volver
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">Archivo de Código</h6>
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{ calificacion_ia.envio.archivo.url }}" target="_blank" class="btn btn-outline-primary">
+                            <i class="fas fa-file-code"></i> Ver Código
+                        </a>
+                        <small class="d-block mt-2 text-muted">
+                            Entregado: {{ calificacion_ia.envio.fecha|date:"d/m/Y H:i" }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Criterios Utilizados</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="small">{{ calificacion_ia.criterios_utilizados|linebreaks }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function selectRevisar() {
+    document.querySelector('input[value="revisar"]').checked = true;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscribirse en Curso{% endblock %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .message {
+            color: #4A4A4A !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message.success {
+            background-color: #e0f7e9 !important;
+            color: #28a745 !important;
+        }
+
+        .message.error {
+            background-color: #f7e0e0 !important;
+            color: #dc3545 !important;
+        }
+
+        .custom-form .form-group input {
+            border: 2px solid #1A3C5A !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+            width: 100% !important;
+            max-width: 400px;
+            margin: 0 auto;
+            transition: border-color 0.3s ease !important;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .custom-form .form-group input:focus {
+            border-color: #FF5733 !important;
+            outline: none !important;
+        }
+
+        .custom-form .form-group label {
+            color: #4A4A4A !important;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 5px auto;
+        }
+
+        .custom-form .form-group .help-text {
+            color: #4A4A4A !important;
+            font-size: 0.9rem !important;
+            margin-top: 5px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="text-center">
+            <div class="custom-section">
+                <h2 class="custom-title">Inscribirse en un Curso</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+                <form method="POST" class="custom-form">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group mb-4">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="help-text">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="custom-button">Inscribirse</button>
+                    <a href="{% url 'dashboard' %}" class="custom-button">Volver al Dashboard</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}

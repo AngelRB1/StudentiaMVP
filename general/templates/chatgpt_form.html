@@ -1,0 +1,22 @@
+<form id="promptForm">
+  <textarea name="prompt" id="prompt" rows="4" cols="50"></textarea>
+  <button type="submit">Enviar</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+document.getElementById('promptForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const prompt = document.getElementById('prompt').value;
+
+  const response = await fetch('/chatgpt/send/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `prompt=${encodeURIComponent(prompt)}`
+  });
+
+  const data = await response.json();
+  document.getElementById('response').innerText = data.response || data.error;
+});
+</script>

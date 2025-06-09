@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .custom-form .form-group input {
+            border: 2px solid #1A3C5A !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+            width: 100% !important;
+            transition: border-color 0.3s ease !important;
+        }
+        .custom-form .form-group input:focus {
+            border-color: #FF5733 !important;
+            outline: none !important;
+        }
+        .custom-form .form-group label {
+            color: #4A4A4A !important;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+        }
+        .custom-button {
+            background-color: #1A3C5A !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-size: 1.2rem !important;
+            border-radius: 25px !important;
+            transition: background-color 0.3s ease !important;
+        }
+        .custom-button:hover {
+            background-color: #FF5733 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-5">
+            <h3 class="title-subhny custom-title">Iniciar Sesión</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="custom-section">
+                    {% if msj %}
+                        <div id="error-login" class="alert alert-danger mb-4">
+                            {{ msj }}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" class="contact-form custom-form">
+                        {% csrf_token %}
+                        <div class="form-group mb-4">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Ingresa tu usuario" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Ingresa tu contraseña" minlength="8" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-style btn-primary custom-button">Ingresar</button>
+                        </div>
+                    </form>
+
+
+                    <div class="text-center mt-3">
+                        <a href="{% url 'password_reset' %}">¿Has olvidado tu contraseña?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const errorDiv = document.getElementById("error-login");
+    const inputs = [document.getElementById("username"), document.getElementById("password")];
+
+    if (errorDiv) {
+        inputs.forEach(input => {
+            input.addEventListener("input", () => {
+                if (errorDiv) {
+                    errorDiv.remove();
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Entregas de {{ actividad.titulo }}{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .custom-title {
+        color: #1A3C5A;
+        font-size: 2.5rem;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: 'Poppins', sans-serif;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    th {
+        background-color: #1A3C5A;
+        color: white;
+        font-weight: 600;
+    }
+    td a {
+        color: #1A3C5A;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+    .custom-button {
+        background-color: #1A3C5A;
+        border: none;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        transition: background-color 0.3s ease;
+        color: #FFFFFF !important;
+        text-decoration: none !important;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+    .custom-button:hover {
+        background-color: #FF5733;
+    }
+    .button-container {
+        margin-top: 30px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section py-5" style="background-color: #F5F8FF;">
+    <div class="container py-md-5 py-4">
+        <div class="custom-section">
+            <h2 class="custom-title">Entregas de {{ actividad.titulo }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Archivo</th>
+                        <th>Fecha</th>
+                        <th>Calificación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for envio in entregas %}
+                    <tr>
+                        <td>{{ envio.alumno.username }}</td>
+                        <td><a href="{{ envio.archivo.url }}" target="_blank">Ver PDF</a></td>
+                        <td>{{ envio.fecha }}</td>
+                        <td>{{ envio.calificacion|default:"Sin calificar" }}</td>
+                        <td>
+                            <a href="{% url 'calificar_entrega' codigo_acceso=curso.codigo_acceso id_envio=envio.id %}" class="custom-button">Calificar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No hay entregas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="button-container">
+                 <a href="{% url 'board' curso.codigo_acceso %}" class="custom-button">Volver al curso</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+{% endblock %}

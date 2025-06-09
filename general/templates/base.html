@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studentia</title>
+    {% load static %}
+    {% block styles %}
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .custom-section {
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-title {
+            color: #1A3C5A !important;
+            font-size: 2.8rem !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+        .navbar-brand {
+            color: #1A3C5A !important;
+            font-size: 1.5rem !important;
+            transition: color 0.3s ease;
+        }
+        .navbar-brand .sublog {
+            color: #FF5733 !important;
+        }
+        .navbar-brand:hover {
+            color: #FF5733 !important;
+        }
+        .nav-link {
+            color: #1A3C5A !important;
+            font-size: 1rem !important;
+            padding: 10px 20px !important;
+            margin: 0 5px;
+            transition: color 0.3s ease !important;
+            border-radius: 5px;
+        }
+        .nav-link:hover {
+            color: #FF5733 !important;
+            background-color: #F5F8FF;
+        }
+        .dropdown-menu {
+            background-color: #FFFFFF;
+            border: 1px solid #1A3C5A;
+            border-radius: 8px;
+            padding: 5px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-item {
+            color: #1A3C5A !important;
+            font-size: 1rem !important;
+            padding: 10px 20px !important;
+            transition: color 0.3s ease !important;
+        }
+        .dropdown-item:hover {
+            color: #FF5733 !important;
+            background-color: #F5F8FF !important;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+        .navbar-user {
+            color: #1A3C5A !important;
+            font-size: 1rem !important;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar-user:hover {
+            background-color: #F5F8FF;
+        }
+        @media (max-width: 992px) {
+            .navbar-nav {
+                margin-top: 10px;
+            }
+            .nav-link, .navbar-user {
+                margin: 5px 0;
+                display: block;
+            }
+            .dropdown-menu {
+                position: static;
+                float: none;
+                width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header id="site-header" class="fixed-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light stroke py-lg-0">
+                <h1>
+                    <a class="navbar-brand pe-xl-5 pe-lg-4" href="{% url 'inicio' %}">
+                        <span class="sublog">Student</span>IA
+                    </a>
+                </h1>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <span class="navbar-user">Hola, @{{ user.username }}</span>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ☰
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'ver_perfil' %}">Mi Perfil</a></li>
+                                    <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                                    {% if user.rol == "profesor" %}
+                                        <li><a class="dropdown-item" href="/new/course">Crear Curso</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="/course/join">Inscribirse en Curso</a></li>
+                                    <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'registrar_usuario' %}">Registrarse</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- //Header -->
+
+    {% block content %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock %}
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const messages = document.querySelectorAll(".messages li");
+
+    messages.forEach(function (msg) {
+      setTimeout(() => {
+        msg.style.transition = "opacity 0.5s ease";
+        msg.style.opacity = 0;
+        setTimeout(() => msg.remove(), 500); // Remover del DOM tras la animación
+      }, 5000); // 5 segundos
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(function (alert) {
+      setTimeout(() => {
+        // Remover la clase 'show' para iniciar el fade out de Bootstrap
+        alert.classList.remove('show');
+
+        // Esperar la transición y luego eliminar el elemento
+        setTimeout(() => {
+          alert.remove();
+        }, 500); // tiempo de la animación de fade
+      }, 5000); // 5 segundos visibles
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const errorLogin = document.getElementById("error-login");
+    if (errorLogin) {
+      setTimeout(() => {
+        errorLogin.style.transition = "opacity 0.5s ease";
+        errorLogin.style.opacity = 0;
+        setTimeout(() => errorLogin.remove(), 500); // Remueve del DOM tras el fade
+      }, 5000); // Desaparece a los 5 segundos
+    }
+  });
+</script>
+
+</html>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Acceso Denegado{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    .denied-section {
+        background: #fff;
+        border-radius: 15px;
+        padding: 40px;
+        max-width: 600px;
+        margin: 50px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .denied-title {
+        color: #C0392B;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .denied-message {
+        color: #555;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+    .custom-button {
+        background-color: #1A3C5A;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+    .custom-button:hover {
+        background-color: #FF5733;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="denied-section">
+    <h1 class="denied-title">Acceso Denegado</h1>
+    <p class="denied-message">No tienes permiso para ver esto.</p>
+    <a href="javascript:history.back()" class="custom-button">Volver</a>
+</div>
+{% endblock %}

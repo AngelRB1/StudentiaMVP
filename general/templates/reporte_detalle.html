@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ reporte.titulo }} - Studentia{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #F5F8FF;
+        padding-top: 80px; /* Adjust for fixed-top header */
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #1A3C5A;
+    }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .report-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1A3C5A;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .report-meta {
+        font-size: 1rem;
+        color: #4A4A4A;
+    }
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        color: #fff;
+    }
+    .btn-secondary {
+        background-color: #1A3C5A;
+        color: #fff;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #FF5733;
+        color: #fff;
+    }
+    .card {
+        background: #F0F4FA;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #1A3C5A;
+        margin-bottom: 20px;
+    }
+    .card-header {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    .table th,
+    .table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+    .table thead th {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+    }
+    .table tbody tr:hover {
+        background-color: #E8EDF5;
+    }
+    .badge.bg-success {
+        background-color: #28a745 !important;
+    }
+    .badge.bg-warning {
+        background-color: #ffc107 !important;
+    }
+    .badge.bg-danger {
+        background-color: #dc3545 !important;
+    }
+    .badge.bg-info {
+        background-color: #17a2b8 !important;
+    }
+    .text-success {
+        color: #28a745 !important;
+    }
+    .text-warning {
+        color: #ffc107 !important;
+    }
+    .text-danger {
+        color: #dc3545 !important;
+    }
+    .text-primary {
+        color: #1A3C5A !important;
+    }
+    .text-info {
+        color: #17a2b8 !important;
+    }
+    .alert-warning {
+        background-color: #F0F4FA;
+        border-left: 5px solid #1A3C5A;
+        border-radius: 12px;
+        padding: 20px;
+        color: #333;
+        text-align: center;
+    }
+    .alert-warning h4 {
+        font-size: 1.5rem;
+        color: #1A3C5A;
+        margin-bottom: 10px;
+    }
+    .progress {
+        height: 30px;
+        border-radius: 8px;
+        background-color: #e9ecef;
+    }
+    .progress-bar {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    .progress-bar.bg-success {
+        background-color: #28a745 !important;
+    }
+    .progress-bar.bg-warning {
+        background-color: #ffc107 !important;
+    }
+    .progress-bar.bg-danger {
+        background-color: #dc3545 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="custom-section">
+        {% if messages %}
+            {% for mensaje in messages %}
+                <div class="alert alert-{{ mensaje.tags }} alert-dismissible fade show" role="alert">
+                    {{ mensaje }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="report-header">
+            <div>
+                <h2 class="report-title">{{ reporte.titulo }}</h2>
+                <p class="report-meta">
+                    Curso: {{ reporte.curso.nombre_curso }} | 
+                    Período: {{ reporte.fecha_inicio|date:"d/m/Y" }} - {{ reporte.fecha_fin|date:"d/m/Y" }}
+                </p>
+            </div>
+            <div>
+                <a href="{% url 'descargar_pdf_reporte' reporte.id %}" class="btn btn-success me-2">
+                    Descargar PDF
+                </a>
+                <a href="{% url 'reportes_curso' reporte.curso.codigo_acceso %}" class="btn btn-secondary">
+                    Volver a Reportes
+                </a>
+            </div>
+        </div>
+
+        {% if promedios_estudiantes %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>Promedio de Calificaciones por Estudiante</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Promedio General</th>
+                                    <th>Promedio Actividades</th>
+                                    <th>Promedio Exámenes</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for datos in promedios_estudiantes %}
+                                <tr>
+                                    <td>
+                                        {% if datos.estudiante.first_name and datos.estudiante.last_name %}
+                                            {{ datos.estudiante.first_name }} {{ datos.estudiante.last_name }}
+                                        {% elif datos.estudiante.first_name %}
+                                            {{ datos.estudiante.first_name }}
+                                        {% else %}
+                                            {{ datos.estudiante.username }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge {% if datos.promedio >= 70 %}bg-success{% elif datos.promedio >= 60 %}bg-warning{% else %}bg-danger{% endif %}">
+                                            {{ datos.promedio }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if datos.promedio_envios %}
+                                            <span class="badge bg-info">{{ datos.promedio_envios }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if datos.promedio_examenes %}
+                                            <span class="badge bg-info">{{ datos.promedio_examenes }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if datos.promedio >= 70 %}
+                                            <span class="text-success fw-bold">Aprobado</span>
+                                        {% elif datos.promedio >= 60 %}
+                                            <span class="text-warning fw-bold">En Riesgo</span>
+                                        {% else %}
+                                            <span class="text-danger fw-bold">Reprobado</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title text-info">Total Estudiantes</h5>
+                            <h3 class="text-primary">{{ promedios_estudiantes|length }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Aprobados</h5>
+                            <h3 class="text-success" id="aprobados-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">En Riesgo</h5>
+                            <h3 class="text-warning" id="riesgo-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">Reprobados</h5>
+                            <h3 class="text-danger" id="reprobados-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Distribución de Calificaciones</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" id="progress-aprobados" style="width: 0%">
+                                    <span id="label-aprobados">Aprobados</span>
+                                </div>
+                                <div class="progress-bar bg-warning" role="progressbar" id="progress-riesgo" style="width: 0%">
+                                    <span id="label-riesgo">En Riesgo</span>
+                                </div>
+                                <div class="progress-bar bg-danger" role="progressbar" id="progress-reprobados" style="width: 0%">
+                                    <span id="label-reprobados">Reprobados</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <h4>Sin Datos</h4>
+                <p>No hay calificaciones registradas para el período seleccionado.</p>
+                <p class="text-muted">Asegúrate de que:</p>
+                <ul class="list-unstyled">
+                    <li>• Los estudiantes hayan enviado actividades</li>
+                    <li>• Las actividades estén calificadas</li>
+                    <li>• Los exámenes estén calificados</li>
+                    <li>• Las fechas del reporte incluyan actividades calificadas</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filas = document.querySelectorAll('tbody tr');
+        let aprobados = 0;
+        let enRiesgo = 0;
+        let reprobados = 0;
+        let total = filas.length;
+
+        filas.forEach(function(fila) {
+            const badge = fila.querySelector('.badge');
+            if (badge) {
+                const promedio = parseFloat(badge.textContent.trim());
+                if (promedio >= 70) {
+                    aprobados++;
+                } else if (promedio >= 60) {
+                    enRiesgo++;
+                } else {
+                    reprobados++;
+                }
+            }
+        });
+
+        document.getElementById('aprobados-count').textContent = aprobados;
+        document.getElementById('riesgo-count').textContent = enRiesgo;
+        document.getElementById('reprobados-count').textContent = reprobados;
+
+        if (total > 0) {
+            const porcentajeAprobados = (aprobados / total) * 100;
+            const porcentajeRiesgo = (enRiesgo / total) * 100;
+            const porcentajeReprobados = (reprobados / total) * 100;
+
+            document.getElementById('progress-aprobados').style.width = porcentajeAprobados + '%';
+            document.getElementById('progress-riesgo').style.width = porcentajeRiesgo + '%';
+            document.getElementById('progress-reprobados').style.width = porcentajeReprobados + '%';
+
+            if (porcentajeAprobados > 15) {
+                document.getElementById('label-aprobados').textContent = `Aprobados (${aprobados})`;
+            }
+            if (porcentajeRiesgo > 15) {
+                document.getElementById('label-riesgo').textContent = `En Riesgo (${enRiesgo})`;
+            }
+            if (porcentajeReprobados > 15) {
+                document.getElementById('label-reprobados').textContent = `Reprobados (${reprobados})`;
+            }
+        }
+    });
+</script>
+{% endblock %}

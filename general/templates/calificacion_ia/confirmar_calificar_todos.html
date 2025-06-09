@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% load static %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #F5F8FF;
+        padding-top: 80px; /* Adjust for fixed-top header */
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+    .breadcrumb-item a {
+        color: #1A3C5A;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .breadcrumb-item a:hover {
+        color: #FF5733;
+    }
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 600;
+    }
+    .card {
+        background: #F0F4FA;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #1A3C5A;
+    }
+    .card-header {
+        background-color: #E8EDF5;
+        color: #1A3C5A;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0;
+        padding: 15px;
+    }
+    .card-header.bg-warning {
+        background-color: #F5A623 !important;
+        color: #333 !important;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .alert-warning {
+        background-color: #fff3cd;
+        border-left: 5px solid #F5A623;
+        border-radius: 12px;
+        padding: 20px;
+        color: #856404;
+    }
+    .btn {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 15px;
+    }
+    .btn-warning {
+        background-color: #F5A623;
+        border-color: #F5A623;
+        color: #333;
+    }
+    .btn-warning:hover {
+        background-color: #FF5733;
+        border-color: #FF5733;
+        color: #fff;
+    }
+    .btn-outline-secondary {
+        color: #1A3C5A;
+        border-color: #1A3C5A;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #1A3C5A;
+        color: #fff;
+    }
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    .d-flex.gap-2 {
+        gap: 10px;
+    }
+    .shadow-sm {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'board' codigo_acceso=curso.codigo_acceso %}">{{ curso.nombre_curso }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'actividades_calificables_ia' codigo_acceso=curso.codigo_acceso %}">Calificar con IA</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'envios_por_calificar_ia' codigo_acceso=curso.codigo_acceso id_actividad=actividad.id %}">{{ actividad.titulo }}</a></li>
+            <li class="breadcrumb-item active">Calificar todos</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Confirmar calificación masiva</h4>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <h5>¿Está seguro que desea calificar todos los envíos con IA?</h5>
+                <p>Esta acción calificará automáticamente {{ cantidad_envios }} envío(s) pendiente(s) para la actividad "{{ actividad.titulo }}".</p>
+                <p>Este proceso puede tardar varios minutos dependiendo de la cantidad de envíos.</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning">Confirmar y calificar todos</button>
+                    <a href="{% url 'envios_por_calificar_ia' codigo_acceso=curso.codigo_acceso id_actividad=actividad.id %}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

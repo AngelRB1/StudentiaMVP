@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+    }
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2.2rem !important;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .student-list {
+        list-style: none;
+        padding: 0;
+        max-width: 500px;
+        margin: 0 auto 30px auto;
+        text-align: left;
+    }
+    .student-list li {
+        margin-bottom: 15px;
+    }
+    .student-link {
+        display: block;
+        padding: 12px 20px;
+        background-color: #A66DD4;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 25px;
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+    .student-link:hover {
+        background-color: #8c4cc2;
+        color: white;
+        text-decoration: none;
+    }
+    .custom-label {
+        font-size: 1.2rem;
+        color: #4A4A4A;
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 30px;
+    }
+    .btn-secondary {
+        background-color: #1A3C5A;
+        color: #fff;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 25px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #FF5733;
+        color: #fff;
+        text-decoration: none;
+    }
+    .student-link-ia {
+    display: block;
+    padding: 12px 20px;
+    background-color: #6FCF97; /* verde claro */
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+.student-link-ia:hover {
+    background-color: #57b77d; /* un poco más oscuro al pasar el cursor */
+    color: white;
+    text-decoration: none;
+}
+
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        {% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert" style="max-width: 700px; margin: 0 auto 20px auto; font-family: 'Poppins', sans-serif; font-size: 0.95rem; border-left: 5px solid #1A3C5A; border-radius: 8px; background-color: #E9ECEF; padding: 15px; color: #1A3C5A;">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar" style="font-size: 1.2rem; opacity: 0.7; border: none; background: none;">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+        <h2 class="custom-title">Seleccionar estudiante para calificar en "{{ examen.titulo }}"</h2>
+
+        {% if estudiantes %}
+            <ul class="student-list">
+            {% for estudiante in estudiantes %}
+                <li>
+                    <a href="{% url 'calificar_respuestas' slug=examen.slug estudiante_id=estudiante.id %}" class="student-link">
+                        Calificar Manualmente a: {{ estudiante.get_full_name|default:estudiante.username }}
+                    </a>
+                </li>
+
+                <li>
+    <a href="{% url 'calificar_respuestas_IA' slug=examen.slug estudiante_id=estudiante.id %}" class="student-link-ia">
+        Calificar por IA a: {{ estudiante.get_full_name|default:estudiante.username }}
+    </a>
+</li>
+
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="custom-label">No hay estudiantes con respuestas para calificar.</p>
+        {% endif %}
+
+        <a href="{% url 'examenes_por_calificar' codigo_acceso=examen.curso.codigo_acceso %}" class="btn-secondary">Volver a exámenes</a>
+    </div>
+</section>
+{% endblock %}

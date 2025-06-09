@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Exámenes por calificar - {{ curso.nombre_curso }}{% endblock %}
+
+{% block styles %}
+<link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>
+    .w3l-contact-section {
+        background-color: #F5F8FF;
+        padding: 50px 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    .custom-section {
+        background: #FFFFFF;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .custom-title {
+        color: #1A3C5A !important;
+        font-size: 2.5rem !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        margin-bottom: 30px;
+        word-break: break-word;
+    }
+    .examen-list {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+        text-align: left;
+    }
+    .examen-list li {
+        margin-bottom: 15px;
+    }
+    .btn-calificar {
+        background-color: #A66DD4;
+        color: white;
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border-radius: 25px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        display: inline-block;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        width: 100%;
+        text-align: center;
+    }
+    .btn-calificar:hover {
+        background-color: #8c4cc2;
+        color: white;
+        text-decoration: none;
+    }
+    .custom-label {
+        font-size: 1.2rem;
+        color: #4A4A4A;
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 30px;
+    }
+    .custom-button {
+        background-color: #1A3C5A !important;
+        border: none !important;
+        padding: 12px 30px !important;
+        font-size: 1.2rem !important;
+        border-radius: 25px !important;
+        transition: background-color 0.3s ease !important;
+        color: #FFFFFF !important;
+        text-decoration: none !important;
+        display: inline-block;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+    .custom-button:hover {
+        background-color: #FF5733 !important;
+        color: #fff !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="w3l-contact-section">
+    <div class="custom-section">
+        <h1 class="custom-title">Exámenes por calificar en {{ curso.nombre_curso }}</h1>
+
+        {% if examenes %}
+            <ul class="examen-list">
+                {% for examen in examenes %}
+                    <li>
+                        <a href="{% url 'seleccionar_estudiante' slug=examen.slug %}" class="btn-calificar">
+                            Calificar: {{ examen.titulo }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="custom-label">No hay exámenes con respuestas pendientes por calificar.</p>
+        {% endif %}
+
+        <a href="{% url 'board' codigo_acceso=curso.codigo_acceso %}" class="custom-button">Volver al curso</a>
+    </div>
+</section>
+{% endblock %}
